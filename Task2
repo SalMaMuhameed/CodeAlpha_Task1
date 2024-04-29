@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 78px);
+            padding: 12px;
+            margin: 20px 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        li span {
+            flex-grow: 1;
+            padding-right: 10px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 8px 15px;
+        }
+
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Add new task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        let taskList = document.getElementById('taskList');
+
+        function addTask() {
+            let taskInput = document.getElementById('taskInput');
+            let taskText = taskInput.value.trim();
+            if (taskText !== '') {
+                let li = document.createElement('li');
+
+                let checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        li.classList.add('completed');
+                    } else {
+                        li.classList.remove('completed');
+                    }
+                });
+
+                let taskTextSpan = document.createElement('span');
+                taskTextSpan.textContent = taskText;
+                taskTextSpan.setAttribute('contenteditable', 'true');
+                taskTextSpan.addEventListener('blur', function() {
+                    let newText = taskTextSpan.textContent.trim();
+                    if (newText !== '') {
+                        taskTextSpan.textContent = newText;
+                    } else {
+                        li.remove();
+                    }
+                });
+
+                li.appendChild(checkbox);
+                li.appendChild(taskTextSpan);
+
+                let deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete-btn';
+                deleteButton.onclick = function() {
+                    li.remove();
+                };
+                li.appendChild(deleteButton);
+
+                taskList.appendChild(li);
+                taskInput.value = '';
+            } else {
+                alert('Please enter a task!');
+            }
+        }
+    </script>
+</body>
+</html>
